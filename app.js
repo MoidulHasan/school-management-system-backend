@@ -1,3 +1,11 @@
+/**
+ * Name: School Management System REST API Application
+ * Descriptions: This module provide main application for the rest api of school management system
+ * Author: Moidul Hasan Khan
+ * Date: 14 August 2022
+ */
+
+// Dependencies
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -6,10 +14,11 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
 
-
-const userRoutes = require('./routes/userRoutes');
 const globalErrHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
+const router = require("./routes")
+
+// module scafolding
 const app = express();
 
 // Allow Cross-Origin requests
@@ -42,7 +51,7 @@ app.use(hpp());
 
 
 // Routes
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/', router);
 
 // handle undefined Routes
 app.use('*', (req, res, next) => {
@@ -50,6 +59,7 @@ app.use('*', (req, res, next) => {
     next(err, req, res, next);
 });
 
+// handle global error
 app.use(globalErrHandler);
 
 module.exports = app;
