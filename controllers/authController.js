@@ -1,3 +1,11 @@
+/**
+ * Name: Auth Controller
+ * Descriptions: This module provide authentication for user
+ * Author: Moidul Hasan Khan
+ * Date: 14 August 2022
+ */
+
+// Dependencies
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
@@ -15,14 +23,19 @@ const createToken = id => {
   );
 };
 
-exports.login = async (req, res, next) => {
+
+// module scafolding
+const authController = {};
+
+// create methods for user login
+authController.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     // 1) check if email and password exist
     if (!email || !password) {
       return next(
-        new AppError(404, "fail", "Please provide email or password"),
+        new AppError(404, "fail", "Please provide email and password"),
         req,
         res,
         next,
@@ -61,7 +74,9 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.signup = async (req, res, next) => {
+
+// Auth controller for signing up a new user
+authController.signup = async (req, res, next) => {
   try {
     const user = await User.create({
       name: req.body.name,
@@ -87,7 +102,9 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.protect = async (req, res, next) => {
+
+// verify if the user is logedin or not
+authController.protect = async (req, res, next) => {
   try {
     // 1) check if the token is there
     let token;
@@ -132,7 +149,7 @@ exports.protect = async (req, res, next) => {
 };
 
 // Authorization check if the user have rights to do this action
-exports.restrictTo = (...roles) => {
+authController.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
@@ -145,3 +162,7 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+
+// export module
+module.exports = authController;
