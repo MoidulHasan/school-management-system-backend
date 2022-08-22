@@ -8,23 +8,18 @@
 // Dependencies
 const express = require('express');
 const router = express.Router();
+
+
+// Import routes
 const classRoutes = require('./classRoutes')
+const subjectRoutes = require('./subjectRoutes')
 
-const classController = require('../../controllers/academic/classController');
 
-// router.all('/', (req, res, next) => {
-//     console.log("called in academic routes")
-//     res.status(200).json({
-//         status: 'success in academic routes'
-//     })
-// })
 
-// handle base url route
+// handle routes
 router.use('/class', classRoutes);
+router.use('/subject', subjectRoutes);
 
-console.log("academic routes")
-
-// handle user routes
 
 
 // export module
