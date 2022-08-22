@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 router.route('/')
-    // .get(view)
+    .get(view)
     .post(add)
     // .put(update)
     // .delete(deleteClass)

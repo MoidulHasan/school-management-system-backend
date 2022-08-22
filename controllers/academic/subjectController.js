@@ -1,6 +1,6 @@
 // Dependencies
 const SubjectInfo = require('../../models/academic/subjectModel')
-const ClassInfo = require('../../controllers/academic/classController')
+const ClassInfo = require('../../models/academic/classModel')
 
 // module scafolding
 const subjectController = {};
@@ -25,8 +25,6 @@ subjectController.add = async (req, res, next) => {
 
             const isClassExist = await ClassInfo.find({ name: className });
 
-            // console.log(isSubjectDataExist);
-
             if (isSubjectDataExist.length > 0) {
                 res.status(400).json({
                     status: 'fail',
@@ -34,7 +32,7 @@ subjectController.add = async (req, res, next) => {
                     data: null
                 });
             }
-            else if (isClassExist.length === 0) {
+            else if (isClassExist.length === 0 || !isClassExist) {
                 res.status(400).json({
                     status: 'fail',
                     message: 'This class name is not exist',
@@ -79,37 +77,54 @@ subjectController.add = async (req, res, next) => {
 }
 
 
-// // view all class data
-// subjectController.view = async (req, res, next) => {
+// view all class data
+subjectController.view = async (req, res, next) => {
+
+    const className = typeof req.query.className === 'string' && req.query.className.length > 0 ? req.query.className : false;
+
+    try {
+        const isClassExist = await ClassInfo.find({ name: className });
+
+        if (isClassExist.length === 0 || !isClassExist) {
+            res.status(400).json({
+                status: 'fail',
+                message: 'This class name is not exist',
+                data: null
+            });
+        } else {
+
+            const subjectData = className ? await SubjectInfo.find({ class: className }) : await SubjectInfo.find();
 
 
-//     try {
-//         const classData = await ClassInfo.find();
+
+            if (subjectData.length > 0) {
+                res.status(200).json({
+                    status: 'success',
+                    message: "Subject info found",
+                    data: subjectData
+                });
+            }
+            else if (subjectData.length === 0) {
+                res.status(500).json({
+                    status: 'fail',
+                    message: 'No class data found',
+                    data: subjectData
+                });
+            }
+        }
 
 
-//         if (classData.length > 0) {
-//             res.status(200).json({
-//                 status: 'success',
-//                 message: "Class info found",
-//                 data: classData
-//             });
-//         }
-//         else if (classData.length === 0) {
-//             res.status(500).json({
-//                 status: 'fail',
-//                 message: 'No class data found',
-//                 data: classData
-//             });
-//         }
-//     }
-//     catch (err) {
-//         res.status(500).json({
-//             status: 'fail',
-//             message: 'Internal server error',
-//             data: null
-//         });
-//     }
-// }
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 'fail',
+            message: 'Internal server error',
+            data: null,
+            error: err
+        });
+    }
+}
 
 
 // // Update class data
