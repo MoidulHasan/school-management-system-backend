@@ -11,7 +11,7 @@ const router = express.Router();
 
 // import route controller for base url
 const homeController = require("../controllers/homeController");
-const authController = require('../controllers/authController');
+const authController = require('../controllers/auth');
 // const userController = require("../controllers/userController");
 
 
@@ -19,24 +19,17 @@ const authController = require('../controllers/authController');
 const userRoute = require("./user/userRoutes");
 const academicRoute = require('./academic');
 
-// handle base url route
+// public routes
 router.all('/', homeController.baseRoute);
+router.all('/login', authController.login);
 
-
-// router.use((req, res, next) => {
-//     console.log(req)
-// })
 
 // add auth controller
 router.use(authController.protect);
 
-console.log("Authenticted user")
 
 // add private routes
-router.use('/academic/', academicRoute)
-
-
-// handle user routes
+router.use('/academic/', academicRoute);
 router.use("/user", userRoute);
 
 module.exports = router;
