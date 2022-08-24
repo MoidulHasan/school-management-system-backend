@@ -11,15 +11,15 @@ const router = express.Router();
 
 
 // Import routes
-const classRoutes = require('./classRoutes')
-const subjectRoutes = require('./subjectRoutes')
-
+const classRoutes = require('./classRoutes');
+const subjectRoutes = require('./subjectRoutes');
+const roomRoutes = require('./roomRoutes');
 
 
 // handle routes
 router.use('/class', classRoutes);
 router.use('/subject', subjectRoutes);
-
+router.use('/room', roomRoutes)
 
 
 // export module
