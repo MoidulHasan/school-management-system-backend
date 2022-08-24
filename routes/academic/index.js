@@ -19,7 +19,7 @@ const roomRoutes = require('./roomRoutes');
 // handle routes
 router.use('/class', classRoutes);
 router.use('/subject', subjectRoutes);
-router.use('/room', roomRoutes)
+router.use('/classroom', roomRoutes)
 
 
 // export module

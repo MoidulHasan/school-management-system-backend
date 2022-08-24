@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 const classRoomSchema = new mongoose.Schema({
     number: {
         type: Number,
-        required: [true, "Class Name is required"],
-        unique: [true, "Class name already exist"]
+        required: [true, "Class room number is required"],
+        unique: [true, "Class room already exist"]
     }
 });
 
