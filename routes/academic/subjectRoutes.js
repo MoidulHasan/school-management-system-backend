@@ -9,7 +9,7 @@ router.route('/')
     .get(view)
     .post(add)
     // .put(update)
-    // .delete(deleteClass)
+    .delete(deleteClass)
     ;
 
 

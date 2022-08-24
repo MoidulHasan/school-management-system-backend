@@ -85,7 +85,7 @@ subjectController.view = async (req, res, next) => {
     try {
         const isClassExist = await ClassInfo.find({ name: className });
 
-        if (isClassExist.length === 0 || !isClassExist) {
+        if (!isClassExist) {
             res.status(400).json({
                 status: 'fail',
                 message: 'This class name is not exist',
@@ -203,55 +203,57 @@ subjectController.view = async (req, res, next) => {
 // }
 
 
-// // delete a class
-// subjectController.deleteClass = async (req, res, next) => {
+// delete a class
+subjectController.deleteClass = async (req, res, next) => {
+    try {
+        const subjectId = typeof req.body.subjectId === 'string' && req.body.subjectId.length > 0 ? req.body.subjectId : false;
 
-//     try {
-//         const className = typeof req.body.className === 'string' && req.body.className.length > 0 ? req.body.className : false;
-
-//         if (className) {
-//             const classData = await ClassInfo.find({
-//                 name: className
-//             })
-
-
-//             if (classData.length === 0) {
-//                 res.status(500).json({
-//                     status: 'fail',
-//                     message: 'No class data found with this class name',
-//                     data: classData
-//                 });
-//             } else {
-//                 const deleteClass = await ClassInfo.findOneAndDelete({ name: className });
-
-//                 if (deleteClass.name === className) {
-//                     res.status(200).json({
-//                         status: 'success',
-//                         message: 'Class data successfully Deleted.',
-//                         data: deleteClass
-//                     });
-//                 } else {
-//                     res.status(500).json({
-//                         status: 'fail',
-//                         message: 'Internal server error',
-//                         data: null
-//                     });
-//                 }
-//             }
-//         } else {
-//             res.status(400).json({
-//                 status: "fail",
-//                 message: "Invalid input",
-//                 data: null
-//             });
-//         }
-
-//     } catch (err) {
-
-//     }
+        if (subjectId) {
+            const subjectData = await SubjectInfo.find({
+                _id: subjectId
+            })
 
 
-// }
+            if (subjectData.length === 0) {
+                res.status(500).json({
+                    status: 'fail',
+                    message: 'No subject data found with this class name',
+                    data: subjectData
+                });
+            } else {
+                const deleteSubject = await SubjectInfo.findOneAndDelete({ _id: subjectId });
+                console.log(deleteSubject, " ", subjectId);
+
+                if (deleteSubject._id == subjectId) {
+                    res.status(200).json({
+                        status: 'success',
+                        message: 'Subject data successfully Deleted.',
+                        data: deleteSubject
+                    });
+                } else {
+                    res.status(500).json({
+                        status: 'fail',
+                        message: 'Internal server error',
+                        data: null
+                    });
+                }
+            }
+        } else {
+            res.status(400).json({
+                status: "fail",
+                message: "Invalid input",
+                data: null
+            });
+        }
+
+    } catch (err) {
+        res.status(500).json({
+            status: 'fail',
+            message: 'Internal server error',
+            data: null
+        });
+    }
+}
 
 
 // export module
