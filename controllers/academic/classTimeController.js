@@ -238,31 +238,31 @@ classTimeController.update = async (req, res, next) => {
 
 
 // delete a class
-classTimeController.deleteClass = async (req, res, next) => {
+classTimeController.deleteClassTime = async (req, res, next) => {
 
     try {
-        const className = typeof req.body.className === 'string' && req.body.className.length > 0 ? req.body.className : false;
+        const classTimeid = typeof req.body.classTimeid ? req.body.classTimeid : false;
 
-        if (className) {
+        if (classTimeid) {
             const classTimeData = await ClassTime.find({
-                name: className
+                _id: classTimeid
             })
 
 
             if (classTimeData.length === 0) {
                 res.status(500).json({
                     status: 'fail',
-                    message: 'No class data found with this class name',
+                    message: 'No class time data found',
                     data: classTimeData
                 });
             } else {
-                const deleteClass = await ClassTime.findOneAndDelete({ name: className });
+                const deleteClassTime = await ClassTime.findOneAndDelete({ _id: classTimeid });
 
-                if (deleteClass.name === className) {
+                if (deleteClassTime.name === className) {
                     res.status(200).json({
                         status: 'success',
-                        message: 'Class data successfully Deleted.',
-                        data: deleteClass
+                        message: 'Time data successfully Deleted.',
+                        data: deleteClassTime
                     });
                 } else {
                     res.status(500).json({
@@ -288,8 +288,6 @@ classTimeController.deleteClass = async (req, res, next) => {
             error: err
         });
     }
-
-
 }
 
 
