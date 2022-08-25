@@ -1,5 +1,5 @@
 // dependencies
-const { add, view, update, deleteClass } = require('../../controllers/academic/classController')
+const { add, view, update, deleteClassTime } = require('../../controllers/academic/classTimeController')
 
 // module scafolding
 const express = require('express');
@@ -9,10 +9,9 @@ router.route('/')
     .get(view)
     .post(add)
     .put(update)
-    .delete(deleteClass);
+    .delete(deleteClassTime);
 
 
-console.log("Class routes")
 
 // export module
 module.exports = router;

@@ -20,7 +20,7 @@ classTimeController.add = async (req, res, next) => {
         try {
             const classTimeData = {
                 startTime: startTime,
-                startTime: startTime
+                endTime: startTime
             };
 
             // find all saved class time and check if this class time overlap any class time
@@ -47,7 +47,7 @@ classTimeController.add = async (req, res, next) => {
                     } else {
                         res.status(500).json({
                             status: 'fail',
-                            message: 'Internal server error',
+                            message: 'Internal server error 1',
                             data: null
                         });
                     }
@@ -64,7 +64,7 @@ classTimeController.add = async (req, res, next) => {
                 } else {
                     res.status(500).json({
                         status: 'fail',
-                        message: 'Internal server error',
+                        message: 'Internal server error 2',
                         data: null
                     });
                 }
@@ -79,7 +79,7 @@ classTimeController.add = async (req, res, next) => {
             } else {
                 res.status(500).json({
                     status: 'fail',
-                    message: 'Internal server error',
+                    message: 'Internal server error 3',
                     data: null
                 });
             }
@@ -132,19 +132,22 @@ classTimeController.view = async (req, res, next) => {
 classTimeController.update = async (req, res, next) => {
     try {
 
-        const currentClassTime = typeof req.body.currentClassTime === 'object' ? typeof req.body.currentClassTime : false;
-        const updatedClassTime = typeof req.body.updatedClassTime === 'object' ? typeof req.body.updatedClassTime : false;
+        const currentClassTime = typeof req.body.currentClassTime === 'object' ? req.body.currentClassTime : false;
+        const updatedClassTime = typeof req.body.updatedClassTime === 'object' ? req.body.updatedClassTime : false;
 
         if (currentClassTime && updatedClassTime) {
 
+
             const currStartTime = typeof currentClassTime.startTime === 'string' ? currentClassTime.startTime : false;
             const currEndTime = typeof currentClassTime.endTime === 'string' ? currentClassTime.endTime : false;
+            const currId = typeof currentClassTime.id === 'string' ? currentClassTime.id : false;
 
             const updateStartTime = typeof updatedClassTime.startTime === 'string' ? updatedClassTime.startTime : false;
             const updateEndTime = typeof updatedClassTime.endTime === 'string' ? updatedClassTime.endTime : false;
 
 
-            if (currStartTime && currEndTime && updateStartTime && updateEndTime) {
+
+            if (currStartTime && currEndTime && updateStartTime && updateEndTime && currId) {
                 const currClassTimeData = {
                     startTime: currStartTime,
                     endTime: currEndTime
@@ -159,7 +162,8 @@ classTimeController.update = async (req, res, next) => {
                 const savedClassTime = await ClassTime.find();
 
                 if (savedClassTime.length > 0) {
-                    const overlapedTime = timeOverlaped(updateClassTimeData, savedClassTime);
+                    const overlapedTime = timeOverlaped(updateClassTimeData, savedClassTime, currId);
+
 
                     if (overlapedTime.length > 0) {
                         res.status(400).json({
@@ -168,20 +172,24 @@ classTimeController.update = async (req, res, next) => {
                             data: overlapedTime
                         });
                     } else {
-                        const saveClassTime = await ClassTime.create(updateClassTimeData);
 
-                        if (saveClassTime._id) {
+
+                        const updateClassTime = await ClassTime.findOneAndUpdate(currClassTimeData, updateClassTimeData);
+
+
+                        if (updateClassTime) {
 
 
                             res.status(200).json({
                                 status: 'success',
                                 message: 'Class time data successfully Saved.',
-                                data: saveClassTime
+                                data: updateClassTime
                             });
+
                         } else {
                             res.status(500).json({
                                 status: 'fail',
-                                message: 'Internal server error',
+                                message: 'Internal server error 1',
                                 data: null
                             });
                         }
@@ -198,7 +206,7 @@ classTimeController.update = async (req, res, next) => {
                     } else {
                         res.status(500).json({
                             status: 'fail',
-                            message: 'Internal server error',
+                            message: 'Internal server error 2',
                             data: null
                         });
                     }
@@ -229,7 +237,7 @@ classTimeController.update = async (req, res, next) => {
         } else {
             res.status(500).json({
                 status: 'fail',
-                message: 'Internal server error',
+                message: 'Internal server error 3',
                 data: null
             });
         }
@@ -241,7 +249,9 @@ classTimeController.update = async (req, res, next) => {
 classTimeController.deleteClassTime = async (req, res, next) => {
 
     try {
-        const classTimeid = typeof req.body.classTimeid ? req.body.classTimeid : false;
+        const classTimeid = req.body.classTimeid ? req.body.classTimeid : false;
+
+
 
         if (classTimeid) {
             const classTimeData = await ClassTime.find({
@@ -267,7 +277,7 @@ classTimeController.deleteClassTime = async (req, res, next) => {
                 } else {
                     res.status(500).json({
                         status: 'fail',
-                        message: 'Internal server error',
+                        message: 'Internal server error ',
                         data: null
                     });
                 }

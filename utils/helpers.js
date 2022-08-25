@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 // convert 12H fromat string type time to minute
 const timeInMinute = (timeToConvert) => {
     let minute = parseInt(timeToConvert.slice(0, 2)) * 60 + parseInt(timeToConvert.slice(3, 5));
@@ -7,15 +9,19 @@ const timeInMinute = (timeToConvert) => {
 
 
 // check if a class time overlap to any other class time
-const timeOverlaped = (classTimeData, savedClassTimes) => {
+const timeOverlaped = (classTimeData, savedClassTimes, currId) => {
     let startTimeAtMinute = timeInMinute(classTimeData.startTime);
     let endTimeAtMinute = timeInMinute(classTimeData.endTime);
 
-    const overlapedTime = savedClassTimes.filter(({ startTime, endTime }) => {
+    const overlapedTime = savedClassTimes.filter(({ startTime, endTime, _id }) => {
         const startAt = timeInMinute(startTime);
         const endAt = timeInMinute(endTime);
 
-        return startTimeAtMinute >= startAt && startTimeAtMinute <= startAt || endTimeAtMinute <= endAt && endTimeAtMinute <= endAt;
+        const id = String(_id);
+
+        // console.log(id, " ", currId, typeof (id), typeof (currId), id !== currId);
+
+        return (startTimeAtMinute >= startAt && startTimeAtMinute <= startAt || endTimeAtMinute <= endAt && endTimeAtMinute <= endAt) && id !== currId;
     })
 
     return overlapedTime;
