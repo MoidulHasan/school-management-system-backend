@@ -14,13 +14,13 @@ const router = express.Router();
 const classRoutes = require('./classRoutes');
 const subjectRoutes = require('./subjectRoutes');
 const roomRoutes = require('./roomRoutes');
-
+const classTime = require('./classTime');
 
 // handle routes
 router.use('/class', classRoutes);
 router.use('/subject', subjectRoutes);
-router.use('/classroom', roomRoutes)
-
+router.use('/classroom', roomRoutes);
+router.use('/classtime', classTime);
 
 // export module
 module.exports = router;
