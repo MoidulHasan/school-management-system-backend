@@ -13,6 +13,8 @@ const timeOverlaped = (classTimeData, savedClassTimes, currId) => {
     let startTimeAtMinute = timeInMinute(classTimeData.startTime);
     let endTimeAtMinute = timeInMinute(classTimeData.endTime);
 
+    console.log(startTimeAtMinute, " ", endTimeAtMinute)
+
     const overlapedTime = savedClassTimes.filter(({ startTime, endTime, _id }) => {
         const startAt = timeInMinute(startTime);
         const endAt = timeInMinute(endTime);
@@ -21,7 +23,7 @@ const timeOverlaped = (classTimeData, savedClassTimes, currId) => {
 
         // console.log(id, " ", currId, typeof (id), typeof (currId), id !== currId);
 
-        return (startTimeAtMinute >= startAt && startTimeAtMinute <= startAt || endTimeAtMinute <= endAt && endTimeAtMinute <= endAt) && id !== currId;
+        return (startTimeAtMinute > startAt && startTimeAtMinute < startAt || endTimeAtMinute < endAt && endTimeAtMinute < endAt) && id !== currId;
     })
 
     return overlapedTime;

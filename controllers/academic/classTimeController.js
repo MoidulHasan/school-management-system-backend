@@ -20,7 +20,7 @@ classTimeController.add = async (req, res, next) => {
         try {
             const classTimeData = {
                 startTime: startTime,
-                endTime: startTime
+                endTime: endTime
             };
 
             // find all saved class time and check if this class time overlap any class time
@@ -132,8 +132,12 @@ classTimeController.view = async (req, res, next) => {
 classTimeController.update = async (req, res, next) => {
     try {
 
+        // console.log(req.body);
+
         const currentClassTime = typeof req.body.currentClassTime === 'object' ? req.body.currentClassTime : false;
         const updatedClassTime = typeof req.body.updatedClassTime === 'object' ? req.body.updatedClassTime : false;
+
+        // console.log(currentClassTime, " ", updatedClassTime)
 
         if (currentClassTime && updatedClassTime) {
 
@@ -163,6 +167,7 @@ classTimeController.update = async (req, res, next) => {
 
                 if (savedClassTime.length > 0) {
                     const overlapedTime = timeOverlaped(updateClassTimeData, savedClassTime, currId);
+                    // console.log(overlapedTime)
 
 
                     if (overlapedTime.length > 0) {
@@ -251,13 +256,10 @@ classTimeController.deleteClassTime = async (req, res, next) => {
     try {
         const classTimeid = req.body.classTimeid ? req.body.classTimeid : false;
 
-
-
         if (classTimeid) {
             const classTimeData = await ClassTime.find({
                 _id: classTimeid
             })
-
 
             if (classTimeData.length === 0) {
                 res.status(500).json({
@@ -268,7 +270,7 @@ classTimeController.deleteClassTime = async (req, res, next) => {
             } else {
                 const deleteClassTime = await ClassTime.findOneAndDelete({ _id: classTimeid });
 
-                if (deleteClassTime.name === className) {
+                if (deleteClassTime) {
                     res.status(200).json({
                         status: 'success',
                         message: 'Time data successfully Deleted.',
