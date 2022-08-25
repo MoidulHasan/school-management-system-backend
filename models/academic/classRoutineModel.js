@@ -28,8 +28,8 @@ const classRoutineSchema = new mongoose.Schema({
 });
 
 
-const classRoomModel = mongoose.model("classRoomModel", classRoutineSchema);
+const classRoutineModel = mongoose.model("classRoutineModel", classRoutineSchema);
 
 
 // export model
-module.exports = classRoomModel;
+module.exports = classRoutineModel;
