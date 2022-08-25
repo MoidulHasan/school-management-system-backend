@@ -22,5 +22,21 @@ const timeOverlaped = (classTimeData, savedClassTimes) => {
 }
 
 
+const is_Start_Time_Greater_Then_Or_Equal_End_Time = (startTime, endTime) => {
+    return timeInMinute(startTime) >= timeInMinute(endTime);
+}
+
+//   classTimeData = {startTime :'08:00 AM', endTime:'12:30 PM'};
+
+//   const schedule = [
+//     {startTime :'01:00 PM', endTime: '02:00 PM'},
+//     {startTime :'08:00 AM', endTime:'12:30 PM'},
+//     {startTime :'11:35 AM', endTime:'01:35 PM'},
+//     {startTime :'10:35 AM', endTime:'11:35 AM'},
+//   ];
+
+//   const overlapedTime = classOverlap( classTimeData, schedule);
+//   console.log(overlapedTime);
+
 // export all functions
-module.exports = { timeInMinute, timeOverlaped };
+module.exports = { timeInMinute, timeOverlaped, is_Start_Time_Greater_Then_Or_Equal_End_Time };
