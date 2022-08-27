@@ -1,5 +1,6 @@
 // Dependencies
-const ClassRoutine = require('../../models/academic/classRoutineModel')
+const ClassRoutine = require('../../models/academic/classRoutineModel');
+const Teacher = require('../../models/academic/teacherModel');
 const mongoose = require('mongoose');
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -139,7 +140,20 @@ classRoutioneController.view = async (req, res, next) => {
                     { teacher: classTeacherId }
                 ]
             }
-        ) : await ClassRoutine.find();
+        )
+            .populate("class")
+            .populate("subject")
+            .populate("roomNumber")
+            .populate("classTime")
+            .populate("teacher")
+
+
+            : await ClassRoutine.find()
+                .populate("class")
+                .populate("subject")
+                .populate("roomNumber")
+                .populate("classTime")
+                .populate("teacher");
 
 
         if (routineData.length > 0) {
@@ -158,6 +172,7 @@ classRoutioneController.view = async (req, res, next) => {
         }
     }
     catch (err) {
+        console.log(err)
         res.status(500).json({
             status: 'fail',
             message: 'Internal server error',
