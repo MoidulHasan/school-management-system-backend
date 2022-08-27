@@ -1,6 +1,5 @@
 // Dependencies
 const ClassRoutine = require('../../models/academic/classRoutineModel');
-const Teacher = require('../../models/academic/teacherModel');
 const mongoose = require('mongoose');
 
 const ObjectId = mongoose.Types.ObjectId;

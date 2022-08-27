@@ -20,7 +20,7 @@ classRoomController.add = async (req, res, next) => {
             };
             const saveClassRoom = await ClassRoom.create(classRoomData);
 
-            if (saveClassRoom._id) {
+            if (saveClassRoom) {
                 res.status(200).json({
                     status: 'success',
                     message: 'Class room data successfully Saved.',

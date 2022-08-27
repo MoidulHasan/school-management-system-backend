@@ -1,5 +1,5 @@
 // dependencies
-const { add, view, update, reject } = require('../../controllers/admission/admitController')
+const { add, view, update, deleteTeacher } = require('../../controllers/user/teacher')
 
 // module scafolding
 const express = require('express');
@@ -8,8 +8,8 @@ const router = express.Router();
 router.route('/')
     .get(view)
     .post(add)
-    // .put(update)
-    .delete(reject);
+    .put(update)
+    .delete(deleteTeacher);
 
 
 

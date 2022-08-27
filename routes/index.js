@@ -16,7 +16,7 @@ const authController = require('../controllers/auth');
 
 
 // import top label route handler
-const userRoute = require("./user/userRoutes");
+const userRoute = require("./user");
 const academicRoute = require('./academic');
 const admission = require("./admission")
 
@@ -31,7 +31,7 @@ router.use(authController.protect);
 
 // add private routes
 router.use('/academic/', academicRoute);
-router.use("/user", userRoute);
+router.use("/user/", userRoute);
 router.use("/admission", admission);
 
 

@@ -34,6 +34,7 @@ const is_Start_Time_Greater_Then_Or_Equal_End_Time = (startTime, endTime) => {
     return timeInMinute(startTime) >= timeInMinute(endTime);
 }
 
+
 //   classTimeData = {startTime :'08:00 AM', endTime:'12:30 PM'};
 
 //   const schedule = [

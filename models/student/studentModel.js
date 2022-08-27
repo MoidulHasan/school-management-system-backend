@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 // model scafolding
-const admissionSchema = new mongoose.Schema({
+const studentSchema = new mongoose.Schema({
 
     firstname: {
         type: String,
@@ -14,7 +14,6 @@ const admissionSchema = new mongoose.Schema({
         type: String,
         required: [true, "Last name is required"],
     },
-
 
     birthday: {
         type: String,
@@ -31,11 +30,11 @@ const admissionSchema = new mongoose.Schema({
         required: [true, "Birth Date is required"],
     },
 
-
     district: {
         type: String,
         required: [true, "District name is required"],
     },
+
     division: {
         type: String,
         required: [true, "Division name is required"],
@@ -45,8 +44,6 @@ const admissionSchema = new mongoose.Schema({
         type: String,
         required: [true, "Fathers name is required"],
     },
-
-
 
     gender: {
         type: String,
@@ -63,15 +60,9 @@ const admissionSchema = new mongoose.Schema({
         required: [true, "Guardian Phone is required"],
     },
 
-
     mothersName: {
         type: String,
         required: [true, "Mother's name is required"],
-    },
-
-    password: {
-        type: String,
-        required: [true, "Confirmed Password is required"],
     },
 
     studentAddress: {
@@ -82,24 +73,40 @@ const admissionSchema = new mongoose.Schema({
     studentsEmail: {
         type: String,
         required: [true, "Student Email is required"],
+        unique: [true, "This email is already registered"],
     },
+
     zipCode: {
         type: String,
         required: false,
     },
-    admissionStatus: {
-        type: String,
-        required: [true, "Admission Status is required"],
-    },
-    paymentStatus: {
-        type: String,
-        required: [true, "Admission Status is required"],
-    },
+
+    serialNo: {
+        type: Number,
+        required: true
+    }
+
 });
 
 
-const admission = mongoose.model("Admission", admissionSchema);
+// // encrypt the password using 'bcryptjs'
+// // Mongoose -> Document Middleware
+// admissionSchema.pre("save", async function (next) {
+//     // check the password if it is modified
+//     if (!this.isModified("password")) {
+//         return next();
+//     }
+
+//     // Hashing the password
+//     this.password = await bcrypt.hash(this.password, 12);
+
+//     next();
+// });
+
+
+
+const Students = mongoose.model("Students", studentSchema);
 
 
 // export model
-module.exports = admission;
+module.exports = Students;
